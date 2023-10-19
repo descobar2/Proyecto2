@@ -1,20 +1,26 @@
-CREATE DATABASE FabricaMuebles;
-USE FabricaMuebles;
 
-CREATE TABLE Proveedor (
-    ProveedorID INT PRIMARY KEY AUTO_INCREMENT,
+CREATE DATABASE FABRICA;
+USE FABRICA;
+CREATE TABLE Persona (
+    PersonaID INT PRIMARY KEY AUTO_INCREMENT,
+    Tipo VARCHAR(1), NOT NULL,
     Nombre VARCHAR(255) NOT NULL,
-    Direccion VARCHAR(255),
-    Telefono VARCHAR(15)
+    Nit VARCHAR(10) NOT NULL
 );
-
-CREATE TABLE Mueble (
-    MuebleID INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(255) NOT NULL,
-    PrecioVenta DECIMAL(10, 2) NOT NULL,
-    CantidadDisponible INT
+CREATE TABLE Producto(
+    ProductoID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(255), NOT NULL,
+    Cantidad INT
+    Precio DECIMAL(10, 2) NOT NULL,
+    Disponible INT
 );
-
+CREATE TABLE Compra(
+    CompraID INT PRIMARY KEY AUTO_INCREMENT,
+    Material VARCHAR(255), NOT NULL,
+    Cantidad INT
+    Precio DECIMAL(10, 2) NOT NULL,
+    Disponible INT
+);
 CREATE TABLE Cliente (
     ClienteID INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(255) NOT NULL,
@@ -54,3 +60,10 @@ CREATE TABLE DetalleCompra (
     FOREIGN KEY (CompraID) REFERENCES Compra(CompraID),
     FOREIGN KEY (MuebleID) REFERENCES Mueble(MuebleID)
 );
+/*
+INSERT INTO Proveedor (ProveedorID, Nombre, Direccion, Telefono)
+VALUES (4, 'Roberto', 'Ciudad', '24280000');
+
+UPDATE Proveedor SET Nombre = ? WHERE ProveedorID = ?
+VALUES (4,'Guatemala');
+*/
