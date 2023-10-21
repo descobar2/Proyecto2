@@ -1,33 +1,26 @@
 package com.fabrica.proyecto;
 
 public class Datos {
-    private String proveedorId;
+    private String productoId;
     private String nombre;
-    private String direccion;
-    private String telefono;
+    private String precio;
 
-    public void setId(String proveedorId){
-        this.proveedorId = proveedorId;
+    public void setId(String productoId){
+        this.productoId = productoId;
     }
     public void setNombre(String nombre){
         this.nombre = nombre;
     }
-    public void setDireccion(String direccion){
-        this.direccion = direccion;
-    }
-    public void setTelefono(String telefono){
-        this.telefono = telefono;
+    public void setPrecio(String precio){
+        this.precio = precio;
     }
     public String getId(){
-        return proveedorId;
+        return productoId;
     }
     public String getNombre(){
         return nombre;
     }
-    public String getDireccion(){
-        return direccion;
-    }
-    public String getTelefono(){
-        return telefono;
+    public String getPrecio(){
+        return precio;
     }
 }

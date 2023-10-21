@@ -60,6 +60,31 @@ public class ConnectionDB{
             e.printStackTrace();
         }
     }
+//funcion para ingresar nuevo producto
+    public void nuevoProdcuto(String nombre, Float precio){
+        try {
+            String sql = "INSERT INTO Producto (NombrePro, PrecioProd) VALUES (?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1,nombre);
+            ps.setFloat(2, precio);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public int getID() throws SQLException{
+        String sql = "SET @nuevoProductoId = LAST_INSERT_ID()";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery(sql);         
+    return rs.getInt("ProductoID");
+    }
+    public void asociarMaterial(int productoId, int materialID, int cantida) throws SQLException{
+        String sql = "INSERT INTO ProdcutoMaterial (ProductoID, MaterialID, Cantidad) VALUES (?,?,?)";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, productoId);
+        ps.setInt(2,materialID);
+        ps.setInt(3,cantida);
+    }
 //funcion para validar si existe un elemento
     public boolean validarDato(String dato){
         try {
@@ -78,7 +103,22 @@ public class ConnectionDB{
         }
         return false;
     }
-
+//funcio para validar si existe un material y retornar id
+    public int getMaterialId(String nombre){
+        try {
+            String sql = "SELECT MaterialID FROM Material WHERE NombreMat = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1,nombre);
+            try(ResultSet rs = ps.executeQuery();){
+                if(rs.next()){
+                    return rs.getInt("MaterialID");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
     public void instertDB(Connection con){
         try{ 
             String sql = "INSERT INTO Proveedor (Nombre, Direccion, Telefono) VALUES (?,?,?)";
@@ -114,23 +154,22 @@ public class ConnectionDB{
             e.printStackTrace();
         }
     }
-    public static ArrayList<Datos> showTable(Connection con){
+    public static ArrayList<Datos> showProductos(Connection con){
         ArrayList<Datos> datos = new ArrayList<Datos>();
         try{
-            String sql = "SELECT * FROM Tarea.Proveedor;";
+            String sql = "SELECT * FROM FABRICA.Producto;";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs =ps.executeQuery(sql);
 
             while(rs.next()){
                 Datos p = new Datos();
-                p.setId(rs.getString("ProveedorID"));
-                p.setNombre(rs.getString("Nombre"));
-                p.setDireccion(rs.getString("Direccion"));
-                p.setTelefono(rs.getString("Telefono"));
+                p.setId(rs.getString("ProductoId"));
+                p.setNombre(rs.getString("NombrePro"));
+                p.setPrecio(rs.getString("PrecioProd"));
                 datos.add(p);
             }
             for (Datos p : datos){
-                System.out.println(p.getId() + "\t" + p.getNombre()  + "\t" + p.getDireccion() + "\t" + p.getTelefono());
+                System.out.println(p.getId() + "\t" + p.getNombre()  + "\t" + p.getPrecio());
             }
         } catch (Exception e) {
             e.printStackTrace();

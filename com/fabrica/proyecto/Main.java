@@ -1,9 +1,10 @@
 package com.fabrica.proyecto;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main{
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NumberFormatException, SQLException {
         String opcion;
         Boolean salir=false;
         Scanner entrada = new Scanner(System.in);
@@ -72,7 +73,7 @@ public class Main{
                     opcion = entrada.nextLine();
                     switch (opcion){
                         case "1":
-                            producto.crearPoducto();
+                            producto.crearProducto();
                         break;
                         case "2":                        
                             material.crearMaterial();
