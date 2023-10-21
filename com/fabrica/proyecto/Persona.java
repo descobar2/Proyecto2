@@ -4,25 +4,23 @@ import java.util.Scanner;
 public class Persona {
     private String nit;
     private String nombre;
-    private String direccion;
     private Scanner scan = new Scanner(System.in);
+    private ConnectionDB connection = new ConnectionDB();
 
-    public void crearCliente(){
-        archivo.registroCliente(solicitarDatos());       
+    public void crearCliente(){      
+        connection.nuevaPersona(1,solicitarNombre(),solicitarNit());
     }
     public void crearProveedor(){
-        archivo.registroProveedor(solicitarDatos());
+        connection.nuevaPersona(2,solicitarNombre(),solicitarNit());
     }
-
-    private String solicitarDatos(){
-    System.out.println("Ingrese NIT:");
-    nit = scan.nextLine();
+    private String solicitarNombre(){
     System.out.println("Ingrese Nombre:");
     nombre = scan.nextLine();
-    System.out.println("Ingrese direccion:");
-    direccion = scan.nextLine();
-
-    return nit+"%"+nombre+"%"+direccion;
+    return nombre;
     }
-
+    private String solicitarNit(){
+    System.out.println("Ingrese Nit:");
+    nit = scan.nextLine();
+    return nit;
+    }
 }

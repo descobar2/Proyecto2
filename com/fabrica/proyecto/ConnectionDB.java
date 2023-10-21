@@ -8,19 +8,35 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class ConnectionDB{
-    final String HOST = "proyecto2.ctlvgikixphm.us-east-1.rds.amazonaws.com:3306/Tarea";
+    final String HOST = "proyecto2.ctlvgikixphm.us-east-1.rds.amazonaws.com:3306/FABRICA";
     final String DB_URL = String.format("jdbc:mysql://%s", HOST);
-    
-    try{
-    final Connection con = DriverManager.getConnection(DB_URL,"progra","Guate2021+");
-    final Statement stmt = con.createStatement();         
-    }catch(SQLException e){
-        e.printStackTrace();
-    }
+    private Connection con;
+    Statement stmt;
 
-    public static void instertDB(Connection con, Statement stmt){
+    public ConnectionDB(){
+        try{
+        con = DriverManager.getConnection(DB_URL,"progra","Guate2021+");
+        stmt = con.createStatement();         
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+//funcion para ingresar personas
+    public void nuevaPersona(int tipo, String nombre, String nit){
+        try{
+            String sql = "INSERT INTO Persona (TipoID, Nombre, Nit) VALUES (?,?,?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1,tipo);
+            ps.setString(2, nombre);
+            ps.setString(3, nit);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void instertDB(Connection con){
         try{ 
-            String sql = "INSERT INTO Proveedor (ProveedorID, Nombre, Direccion, Telefono) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO Proveedor (Nombre, Direccion, Telefono) VALUES (?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1,4);
             ps.setString(2, "Allan");
@@ -32,7 +48,7 @@ public class ConnectionDB{
             e.printStackTrace();
         }        
     }
-    public static void updateDB(Connection con, Statement stmt){
+    public void updateDB(Connection con){
         try{
             String sql = "UPDATE Proveedor SET Nombre = ? WHERE ProveedorID = ?";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -43,7 +59,7 @@ public class ConnectionDB{
             e.printStackTrace();
         }
     }
-    public static void deleteDB(Connection con, Statement stmt){
+    public static void deleteDB(Connection con){
         try{
             String sql = "DELETE FROM Tarea.Proveedor WHERE ProveedorID = ?";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -53,7 +69,7 @@ public class ConnectionDB{
             e.printStackTrace();
         }
     }
-    public static ArrayList<Datos> showTable(Connection con, Statement stmt){
+    public static ArrayList<Datos> showTable(Connection con){
         ArrayList<Datos> datos = new ArrayList<Datos>();
         try{
             String sql = "SELECT * FROM Tarea.Proveedor;";
@@ -77,3 +93,4 @@ public class ConnectionDB{
     return datos;
     }
 }
+

@@ -14,7 +14,7 @@ public class Main{
         ComprarMaterial comprar = new ComprarMaterial();
         Vender vender = new Vender();
 
-            do{
+        do{
             menu.principal();
             opcion = entrada.nextLine();
             switch(opcion){
