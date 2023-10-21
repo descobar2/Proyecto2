@@ -21,7 +21,7 @@ public class ConnectionDB{
             e.printStackTrace();
         }
     }
-//funcion para ingresar personas
+//funcion para ingresar personas como cliente o proveedor
     public void nuevaPersona(int tipo, String nombre, String nit){
         try{
             String sql = "INSERT INTO Persona (TipoID, Nombre, Nit) VALUES (?,?,?)";
@@ -34,6 +34,51 @@ public class ConnectionDB{
             e.printStackTrace();
         }
     }
+//funcion para ingresar materiales
+    public void nuevoMaterial(String nombre, String medida, float precio){
+        try{
+            String sql = "INSERT INTO Material (NombreMat, Medida, PrecioMat, CantDisp) VALUES (?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1,nombre);
+            ps.setString(2, medida);
+            ps.setFloat(3, precio);
+            ps.setInt(4,0);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+//funcion para ingresar compra
+    public void nuevaCompra(String nombre, int cantidad){
+        try{
+            String sql = "UPDATE Material SET CantDisp = ? WHERE NombreMat = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, cantidad);
+            ps.setString(2,nombre);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+//funcion para validar si existe un elemento
+    public boolean validarDato(String dato){
+        try {
+            String sql = "SELECT COUNT(*) FROM Material WHERE NombreMat = ?";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, dato);              
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        int rowCount = rs.getInt(1);
+                        return rowCount > 0;  // Si rowCount es mayor que 0, el valor existe.
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void instertDB(Connection con){
         try{ 
             String sql = "INSERT INTO Proveedor (Nombre, Direccion, Telefono) VALUES (?,?,?)";
