@@ -14,6 +14,7 @@ public class Main{
         Material material = new Material();
         ComprarMaterial comprar = new ComprarMaterial();
         Vender vender = new Vender();
+        //ConnectionDB connection = new ConnectionDB();
 
         do{
             menu.principal();
@@ -94,6 +95,7 @@ public class Main{
                 case "5":
                     menu.buscar();
                     opcion = entrada.nextLine();
+                    //System.out.println(connection.getPorductoID(opcion));
                     switch (opcion){
                         case "1":
                             System.out.println("Ingrese No. de orden: ");

@@ -72,18 +72,28 @@ public class ConnectionDB{
             e.printStackTrace();
         }
     }
-    public int getID() throws SQLException{
-        String sql = "SET @nuevoProductoId = LAST_INSERT_ID()";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery(sql);         
-    return rs.getInt("ProductoID");
+    public int getPorductoID(String nombre) throws SQLException{
+         try {
+            String sql = "SELECT ProductoID FROM Producto WHERE NombrePro = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1,nombre);
+            try(ResultSet rs = ps.executeQuery();){
+                if(rs.next()){
+                    return rs.getInt("ProductoID");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
     public void asociarMaterial(int productoId, int materialID, int cantida) throws SQLException{
-        String sql = "INSERT INTO ProdcutoMaterial (ProductoID, MaterialID, Cantidad) VALUES (?,?,?)";
+        String sql = "INSERT INTO ProductoMaterial (ProductoID, MaterialID, Cantidad) VALUES (?,?,?)";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, productoId);
         ps.setInt(2,materialID);
         ps.setInt(3,cantida);
+        ps.executeUpdate();
     }
 //funcion para validar si existe un elemento
     public boolean validarDato(String dato){

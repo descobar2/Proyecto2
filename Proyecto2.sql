@@ -61,7 +61,6 @@ CREATE TABLE ProductoMaterial (
     ProductoMaterialID INT AUTO_INCREMENT PRIMARY KEY,
     ProductoID INT NOT NULL,
     MaterialID INT NOT NULL,
-    Cantidad INT NOT NULL,
-    FOREIGN KEY (ProductoID) REFERENCES Producto(ProductoID),
-    FOREIGN KEY (MaterialID) REFERENCES Material(MaterialID)
+    Cantidad INT NOT NULL);
 );
+DROP TABLE ProductoMaterial;
