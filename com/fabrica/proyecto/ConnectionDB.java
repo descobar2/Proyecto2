@@ -113,7 +113,7 @@ public class ConnectionDB{
         }
         return false;
     }
-//funcio para validar si existe un material y retornar id
+//funcion para validar si existe un material y retornar id
     public int getMaterialId(String nombre){
         try {
             String sql = "SELECT MaterialID FROM Material WHERE NombreMat = ?";
@@ -129,6 +129,95 @@ public class ConnectionDB{
         }
         return -1;
     }
+//funcion para crear orden de compra.
+    public void nuevaOrden(int proveedorID, int clienteID, int tipoID, String estado){
+        try {
+            String sql = "INSERT INTO Documento (ProveedorID, ClienteID, tipoID, estado) VALUES (?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1,proveedorID);
+            ps.setInt(2, clienteID);
+            ps.setInt(3, tipoID);
+            ps.setString(4, estado);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public int getPersonaID(String nombre, int tipo) throws SQLException{
+         try {
+            String sql = "SELECT PersonaID FROM Persona WHERE Nombre = ? AND TipoID = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1,nombre);
+            ps.setInt(2,tipo);
+            try(ResultSet rs = ps.executeQuery();){
+                if(rs.next()){
+                    return rs.getInt("PersonaID");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    public ArrayList<ListaMateriales> listaMaterial(int productoID, int cantidad){      
+        ArrayList<ListaMateriales> datos = new ArrayList<ListaMateriales>();
+        ArrayList<ListaMateriales> pedido = new ArrayList<ListaMateriales>();       
+        int contador = 0;
+        try {
+            String sql = "SELECT MaterialID, Cantidad FROM ProductoMaterial WHERE ProductoID = ?";                    
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs =ps.executeQuery(sql);
+            while(rs.next()){
+                ListaMateriales p = new ListaMateriales();
+                p.setId(rs.getInt("ProductoId"));
+                p.setMaterialID(rs.getInt("MaterialID"));
+                p.setCantidad(rs.getInt("PrecioProd"));
+                datos.add(p);
+            }
+            System.out.print("Validadando");
+            for (ListaMateriales p : datos){
+                if((p.getCantidad()*cantidad)<(getDisponible(p.getMaterialID()))){
+                    System.out.print(".");
+                    ListaMateriales lm = new ListaMateriales();
+                    lm.setId(p.getId());
+                    lm.setMaterialID(p.getMaterialID());
+                    lm.setCantidad(((getDisponible(p.getMaterialID()))-(p.getCantidad()*cantidad)));
+                    pedido.add(lm);
+                    contador++;
+                }else{
+                    System.out.println("Materiales en bodega");
+                    //funcion para descontar materiales
+                }
+                if (contador>0){
+                    Menu menu = new Menu();
+                    System.out.println("Materiales no disponibles, desea generar pedido");
+                    if(menu.menuSiNo()){
+                        //funcion crear pedido
+                    }
+                }                
+                System.out.println(p.getId() + "\t" + p.getMaterialID()  + "\t" + p.getCantidad());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return datos;
+    }
+    public int getDisponible(int materialID){
+            try {
+                String sql = "SELECT CantDisp FROM Material WHERE MaterialID = ? ";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1,materialID);
+                    try(ResultSet rs = ps.executeQuery();){
+                        if(rs.next()){
+                            return rs.getInt("CantDisp");
+                        }
+                    }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        return -1;
+    }
+//----------------------------------------------------------------------    
     public void instertDB(Connection con){
         try{ 
             String sql = "INSERT INTO Proveedor (Nombre, Direccion, Telefono) VALUES (?,?,?)";
@@ -164,21 +253,21 @@ public class ConnectionDB{
             e.printStackTrace();
         }
     }
-    public static ArrayList<Datos> showProductos(Connection con){
-        ArrayList<Datos> datos = new ArrayList<Datos>();
+    public static ArrayList<ListaMateriales> showProductos(Connection con){
+        ArrayList<ListaMateriales> datos = new ArrayList<ListaMateriales>();
         try{
             String sql = "SELECT * FROM FABRICA.Producto;";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs =ps.executeQuery(sql);
 
             while(rs.next()){
-                Datos p = new Datos();
+                ListaMateriales p = new ListaMateriales();
                 p.setId(rs.getString("ProductoId"));
                 p.setNombre(rs.getString("NombrePro"));
                 p.setPrecio(rs.getString("PrecioProd"));
                 datos.add(p);
             }
-            for (Datos p : datos){
+            for (ListaMateriales p : datos){
                 System.out.println(p.getId() + "\t" + p.getNombre()  + "\t" + p.getPrecio());
             }
         } catch (Exception e) {

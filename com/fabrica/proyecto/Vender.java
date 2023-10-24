@@ -4,28 +4,34 @@ import java.util.Scanner;
 
 public class Vender implements Operaciones{
     private Scanner scan = new Scanner(System.in);
-    private String nombre;
-    private String venta="";
-    private String cProducto;
+    private ConnectionDB connection = new ConnectionDB();
+    private Menu menu = new Menu();
+    private Persona persona = new Persona();
+    private String cliente;
     private String cantidad;
     private String producto;
-    private String estado;
-    private String id;
-    private int idPD;
-    private int valor=0;
 
     @Override
     public void realizar() {
         String pedido="";
         System.out.println("Ingrese nombre de producto");                
-        nombre = scan.nextLine();
-        System.out.println("Ingrese cantidad");
-        cProducto = scan.nextLine();
-        
-        if(archivo.buscarProducto(nombre)){
-            int i=3;            
-            producto = archivo.retornarProd(nombre);
-            String[] arreglo = producto.split("%");
+        producto = scan.nextLine();       
+        if(connection.validarDato(producto)){
+            System.out.println("Ingrese cantidad");
+            cantidad = scan.nextLine();
+            //validar inventario, si hay existensi continue, si no crear pedido.            
+
+            if(connection.validarDato(cliente)){                
+                connection.nuevaOrden(0,connection.getPersonaID(cliente,1),1,"Espera");
+            }else{
+                System.out.println("Cliente no existe, desea crearlo: ");
+                if(menu.menuSiNo()){
+                    persona.crearCliente();
+                    //funcion para crear orden
+                }
+            }
+
+
             while(i<arreglo.length){
                 id = arreglo[i];
                 i++;
@@ -55,8 +61,7 @@ public class Vender implements Operaciones{
             System.out.println("No es posible realizar accion. Producto no existe");
         }
     }
-    public void editarEstadoV(String estado){
-                
-        archivo.modificarEstado(id, estado, "estado");
+    public void nuevoPedido(String estado){
+        
     }
 }
