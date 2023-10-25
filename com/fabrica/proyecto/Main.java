@@ -15,6 +15,7 @@ public class Main{
         ComprarMaterial comprar = new ComprarMaterial();
         Vender vender = new Vender();
         ConnectionDB connection = new ConnectionDB();
+        ConsultasDB consultas = new ConsultasDB();
 
         do{
             menu.principal();
@@ -39,16 +40,16 @@ public class Main{
                                     switch(opcion){
                                         case"1":
                                         //Proceso de corte
-                                        vender.editarEstadoV("Proceso de corte");
+                                        //vender.editarEstadoV("Proceso de corte");
                                         case"2":
                                         //Proceso de armado
-                                        vender.editarEstadoV("Proceso de armado");
+                                        //vender.editarEstadoV("Proceso de armado");
                                         case"3":
                                         //Proceso de acabado
-                                        vender.editarEstadoV("Proceso de acabado");
+                                        //vender.editarEstadoV("Proceso de acabado");
                                         case"4":
                                         //Proceso de entrega
-                                        vender.editarEstadoV("Proceso de entrega");
+                                        //vender.editarEstadoV("Proceso de entrega");
                                     }
                                     break;
                                 case "2":
@@ -95,7 +96,8 @@ public class Main{
                 case "5":
                     menu.buscar();
                     opcion = entrada.nextLine();
-                    System.out.println(connection.getPersonaID(opcion,2));
+                    //System.out.println(consultas.getInventario(opcion)); //String
+                    //System.out.println(consultas.getNombreMat(Integer.parseInt(opcion))); //Integer
                     switch (opcion){
                         case "1":
                             System.out.println("Ingrese No. de orden: ");

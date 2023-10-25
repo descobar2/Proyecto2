@@ -169,7 +169,7 @@ public class ConnectionDB{
             ResultSet rs =ps.executeQuery(sql);
             while(rs.next()){
                 ListaMateriales p = new ListaMateriales();
-                p.setId(rs.getInt("ProductoId"));
+                p.setMaterialID(rs.getInt("ProductoId"));
                 p.setMaterialID(rs.getInt("MaterialID"));
                 p.setCantidad(rs.getInt("PrecioProd"));
                 datos.add(p);
@@ -179,7 +179,7 @@ public class ConnectionDB{
                 if((p.getCantidad()*cantidad)<(getDisponible(p.getMaterialID()))){
                     System.out.print(".");
                     ListaMateriales lm = new ListaMateriales();
-                    lm.setId(p.getId());
+                    lm.setMaterialID(p.getMaterialID());
                     lm.setMaterialID(p.getMaterialID());
                     lm.setCantidad(((getDisponible(p.getMaterialID()))-(p.getCantidad()*cantidad)));
                     pedido.add(lm);
@@ -252,28 +252,6 @@ public class ConnectionDB{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    public static ArrayList<ListaMateriales> showProductos(Connection con){
-        ArrayList<ListaMateriales> datos = new ArrayList<ListaMateriales>();
-        try{
-            String sql = "SELECT * FROM FABRICA.Producto;";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs =ps.executeQuery(sql);
-
-            while(rs.next()){
-                ListaMateriales p = new ListaMateriales();
-                p.setId(rs.getString("ProductoId"));
-                p.setNombre(rs.getString("NombrePro"));
-                p.setPrecio(rs.getString("PrecioProd"));
-                datos.add(p);
-            }
-            for (ListaMateriales p : datos){
-                System.out.println(p.getId() + "\t" + p.getNombre()  + "\t" + p.getPrecio());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    return datos;
     }
 }
 
