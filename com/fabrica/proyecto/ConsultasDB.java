@@ -56,29 +56,20 @@ public class ConsultasDB {
     }
     public int getPersonaTipo(String cliente){
             String dato = getDato("Persona","TipoID","Nombre",cliente);
-    return Integer.parseInt(dato);
+        return Integer.parseInt(dato);
     }  
 //Consultas tabla Producto
-    public int getPorductoID(String nombre){
-        try {
-        String sql = "SELECT ProductoID FROM Producto WHERE NombrePro = ?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1,nombre);
-        try(ResultSet rs = ps.executeQuery();){
-            if(rs.next()){
-                return rs.getInt("ProductoID");
-            }
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
+    public int getProductoID(String nombre){
+            String dato = getDato("Producto","ProductoID","NombrePro",nombre);
+        return Integer.parseInt(dato);
     }
-    return -1;
-    }
-
 //Consultas tabla ProductoMaterial
 
+
+
+//Consultas tabla * campo 
     public String getDato(String tabla, String campoObtener, String campoBuscar, String busqueda){
-        String respuesta="Null";
+        String respuesta="-1";
         try{
             String sql = "SELECT "+ campoObtener +" FROM "+ tabla +" WHERE "+ campoBuscar +" = ?";
             PreparedStatement ps = con.prepareStatement(sql);

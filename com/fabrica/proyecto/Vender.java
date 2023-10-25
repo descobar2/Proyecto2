@@ -20,11 +20,11 @@ public class Vender implements Operaciones{
         if(connection.validarDato(producto)){
             System.out.println("Ingrese cantidad");
             cantidad = scan.nextLine();
-            //validar inventario, si hay existensia continua, si no crear pedido.            
-
+            //validar inventario, si hay existensia continua, si no crear pedido del material que hace falta.
+            //Se asocia pedio a orden de compra.
             if(connection.validarDato(cliente)){                
                 try {
-                    nuevaOrden();
+                    nuevaOrden("Bodega");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -33,7 +33,7 @@ public class Vender implements Operaciones{
                 if(menu.menuSiNo()){
                     persona.crearCliente();
                     try {
-                        nuevaOrden();
+                        nuevaOrden("Bodega");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -46,7 +46,7 @@ public class Vender implements Operaciones{
     public void nuevoPedido(String estado){
         
     }
-    public void nuevaOrden() throws SQLException{
-        connection.nuevaOrden(0,connection.getPersonaID(cliente,1),1,"Espera");
+    public void nuevaOrden(String estado) throws SQLException{
+        connection.nuevaOrden(0,connection.getPersonaID(cliente,1),1,estado);
     }
 }

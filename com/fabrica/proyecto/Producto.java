@@ -27,13 +27,14 @@ public class Producto {
             if(connection.validarDato(nombreMaterial)){
                 System.out.println("Ingrese cantidad de material");
                 cantidad = scan.nextLine();                
-                connection.asociarMaterial(consultas.getPorductoID(nombre),consultas.getMaterialID(nombreMaterial),Integer.valueOf(cantidad));
+                connection.asociarMaterial(consultas.getProductoID(nombre),consultas.getMaterialID(nombreMaterial),Integer.valueOf(cantidad));
             }else{
                 System.out.println("El material no existe, desea crearlo: ");
                 if(menu.menuSiNo()){
                     material.crearMaterial();
+                    connection.asociarMaterial(consultas.getProductoID(nombre),consultas.getMaterialID(nombreMaterial),Integer.valueOf(cantidad));
                 }else{
-                    System.out.println("Producto no fue creado");
+                    System.out.println("Material no agregado");
                 }
             }
             System.out.println("Desea ingresar otro material:");

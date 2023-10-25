@@ -14,8 +14,8 @@ public class Main{
         Material material = new Material();
         ComprarMaterial comprar = new ComprarMaterial();
         Vender vender = new Vender();
-        ConnectionDB connection = new ConnectionDB();
-        ConsultasDB consultas = new ConsultasDB();
+        //ConnectionDB connection = new ConnectionDB();
+        //ConsultasDB consultas = new ConsultasDB();
 
         do{
             menu.principal();
