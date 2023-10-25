@@ -11,13 +11,14 @@ public class Producto {
     private Scanner scan = new Scanner(System.in);
     private Menu menu = new Menu();
     private ConnectionDB connection = new ConnectionDB();
+    private ConsultasDB consultas = new ConsultasDB();
 
     public void crearProducto() throws NumberFormatException, SQLException{
         System.out.println("Ingrese nombre del producto:");
         nombre = scan.nextLine();
         System.out.println("Ingrese precio del producto:");
         precio = scan.nextLine();
-        connection.nuevoProdcuto(nombre,Float.parseFloat(precio));
+        connection.nuevoProducto(nombre,Float.parseFloat(precio));
         System.out.println("");
         System.out.println("Ingrese materiales para fabricar " + nombre);
         do{
@@ -26,7 +27,7 @@ public class Producto {
             if(connection.validarDato(nombreMaterial)){
                 System.out.println("Ingrese cantidad de material");
                 cantidad = scan.nextLine();                
-                connection.asociarMaterial(connection.getPorductoID(nombre),connection.getMaterialId(nombreMaterial),Integer.valueOf(cantidad));
+                connection.asociarMaterial(consultas.getPorductoID(nombre),consultas.getMaterialID(nombreMaterial),Integer.valueOf(cantidad));
             }else{
                 System.out.println("El material no existe, desea crearlo: ");
                 if(menu.menuSiNo()){

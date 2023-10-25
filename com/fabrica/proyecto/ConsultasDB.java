@@ -40,9 +40,9 @@ public class ConsultasDB {
         String dato = getDato("Material","NombreMat","materialID",sMaterialID);          
         return dato;
     }
-    public String getMaterialID(String nombre){
+    public int getMaterialID(String nombre){
         String dato = getDato("Material","materialID","NombreMat",nombre);          
-        return dato;
+        return Integer.parseInt(dato);
     }
 //Consutlas tabla persona
     public String getPersona(String cliente){
@@ -58,9 +58,24 @@ public class ConsultasDB {
             String dato = getDato("Persona","TipoID","Nombre",cliente);
     return Integer.parseInt(dato);
     }  
-//Consultas tabla ProductoMaterial
-    
+//Consultas tabla Producto
+    public int getPorductoID(String nombre){
+        try {
+        String sql = "SELECT ProductoID FROM Producto WHERE NombrePro = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1,nombre);
+        try(ResultSet rs = ps.executeQuery();){
+            if(rs.next()){
+                return rs.getInt("ProductoID");
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+    }
 
+//Consultas tabla ProductoMaterial
 
     public String getDato(String tabla, String campoObtener, String campoBuscar, String busqueda){
         String respuesta="Null";

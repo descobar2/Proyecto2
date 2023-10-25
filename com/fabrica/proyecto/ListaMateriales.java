@@ -6,8 +6,10 @@ public class ListaMateriales {
     private String medida;
     private Float precioMat;
     private int cantidad;
-    
-//Setters
+    private int productoMaterialID;
+    private int productoID;
+
+//Setters Material
     public void setMaterialID(int materialID){
         this.materialID = materialID;
     }
@@ -23,7 +25,7 @@ public class ListaMateriales {
     public void setCantidad(int cantidad){
         this.cantidad = cantidad;
     }
-//Getters
+//Getters Material
     public int getMaterialID(){
         return materialID;
     }
@@ -38,5 +40,19 @@ public class ListaMateriales {
     }
     public int getCantidad(){
         return cantidad;
+    }
+//Setters ProductoMaterial
+    public void setProductoMaterialID(int productoMaterialID){
+        this.productoMaterialID = productoMaterialID;
+    }
+    public void setProductoID(int productoID){
+        this.productoID = productoID;
+    }
+//Getters ProductoMaterial
+    public int getProductoMaterialID(){
+        return productoMaterialID;
+    }
+    public int getProductoID(){
+        return productoID;
     }
 }

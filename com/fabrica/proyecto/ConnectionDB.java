@@ -61,7 +61,7 @@ public class ConnectionDB{
         }
     }
 //funcion para ingresar nuevo producto
-    public void nuevoProdcuto(String nombre, Float precio){
+    public void nuevoProducto(String nombre, Float precio){
         try {
             String sql = "INSERT INTO Producto (NombrePro, PrecioProd) VALUES (?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -71,21 +71,6 @@ public class ConnectionDB{
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public int getPorductoID(String nombre) throws SQLException{
-         try {
-            String sql = "SELECT ProductoID FROM Producto WHERE NombrePro = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1,nombre);
-            try(ResultSet rs = ps.executeQuery();){
-                if(rs.next()){
-                    return rs.getInt("ProductoID");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
     }
     public void asociarMaterial(int productoId, int materialID, int cantida) throws SQLException{
         String sql = "INSERT INTO ProductoMaterial (ProductoID, MaterialID, Cantidad) VALUES (?,?,?)";
@@ -112,22 +97,6 @@ public class ConnectionDB{
             e.printStackTrace();
         }
         return false;
-    }
-//funcion para validar si existe un material y retornar id
-    public int getMaterialId(String nombre){
-        try {
-            String sql = "SELECT MaterialID FROM Material WHERE NombreMat = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1,nombre);
-            try(ResultSet rs = ps.executeQuery();){
-                if(rs.next()){
-                    return rs.getInt("MaterialID");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
     }
 //funcion para crear orden de compra.
     public void nuevaOrden(int proveedorID, int clienteID, int tipoID, String estado){
@@ -161,7 +130,8 @@ public class ConnectionDB{
     }
     public ArrayList<ListaMateriales> listaMaterial(int productoID, int cantidad){      
         ArrayList<ListaMateriales> datos = new ArrayList<ListaMateriales>();
-        ArrayList<ListaMateriales> pedido = new ArrayList<ListaMateriales>();       
+        ArrayList<ListaMateriales> orden = new ArrayList<ListaMateriales>();  
+        ArrayList<ListaMateriales> pedido = new ArrayList<ListaMateriales>();
         int contador = 0;
         try {
             String sql = "SELECT MaterialID, Cantidad FROM ProductoMaterial WHERE ProductoID = ?";                    
@@ -169,33 +139,37 @@ public class ConnectionDB{
             ResultSet rs =ps.executeQuery(sql);
             while(rs.next()){
                 ListaMateriales p = new ListaMateriales();
-                p.setMaterialID(rs.getInt("ProductoId"));
+                p.setProductoID(rs.getInt("ProductoId"));
                 p.setMaterialID(rs.getInt("MaterialID"));
-                p.setCantidad(rs.getInt("PrecioProd"));
+                p.setCantidad(rs.getInt("Cantidad"));
                 datos.add(p);
             }
             System.out.print("Validadando");
             for (ListaMateriales p : datos){
                 if((p.getCantidad()*cantidad)<(getDisponible(p.getMaterialID()))){
                     System.out.print(".");
-                    ListaMateriales lm = new ListaMateriales();
-                    lm.setMaterialID(p.getMaterialID());
-                    lm.setMaterialID(p.getMaterialID());
-                    lm.setCantidad(((getDisponible(p.getMaterialID()))-(p.getCantidad()*cantidad)));
-                    pedido.add(lm);
-                    contador++;
+                    ListaMateriales lo = new ListaMateriales();
+                    lo.setProductoID(p.getProductoID());
+                    lo.setMaterialID(p.getMaterialID());
+                    lo.setCantidad(p.getCantidad()*cantidad);
+                    orden.add(lo);
                 }else{
-                    System.out.println("Materiales en bodega");
-                    //funcion para descontar materiales
+                    System.out.print(".");
+                    ListaMateriales lp = new ListaMateriales();
+                    lp.setMaterialID(p.getMaterialID());
+                    lp.setCantidad(p.getCantidad()*cantidad);
+                    pedido.add(lp);
+                    contador++;
+                }               
+            }
+            if (contador>0){
+                Menu menu = new Menu();
+                System.out.println("Materiales no disponibles, desea generar pedido");
+                if(menu.menuSiNo()){
+                    //funcion crear pedido
                 }
-                if (contador>0){
-                    Menu menu = new Menu();
-                    System.out.println("Materiales no disponibles, desea generar pedido");
-                    if(menu.menuSiNo()){
-                        //funcion crear pedido
-                    }
-                }                
-                System.out.println(p.getId() + "\t" + p.getMaterialID()  + "\t" + p.getCantidad());
+            }else{
+                    //funcion insetar orden en DB
             }
         } catch (Exception e) {
             e.printStackTrace();
