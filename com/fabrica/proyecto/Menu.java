@@ -11,9 +11,9 @@ public class Menu {
         System.out.println("\nFabrica de Muebles");
         System.out.println("1. Realizar una compra");
         System.out.println("2. Realizar una venta");
-        System.out.println("3. Editar");
+        System.out.println("3. Editar estado");
         System.out.println("4. Crear");
-        System.out.println("5. Bucar");
+        //System.out.println("5. Bucar");
         System.out.println("0. Salir");
     }
     public void crear(){
@@ -52,10 +52,11 @@ public class Menu {
         System.out.println("3. Regresar");           
     }
     public void editarEstado(){
-        System.out.println("1. Proceso de corte");
-        System.out.println("2. Proceso de armadao");
-        System.out.println("3. Proceso de acabados");
-        System.out.println("4. Proceso de entrega");
+        System.out.println("1. En bodega");
+        System.out.println("2. Proceso de corte");
+        System.out.println("3. Proceso de armado");
+        System.out.println("4. Proceso de acabados");
+        System.out.println("5. Finalizado");
     }        
     public void buscar(){
         System.out.println("\nMenu Buscar");

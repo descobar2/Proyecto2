@@ -14,8 +14,8 @@ public class Main{
         Material material = new Material();
         ComprarMaterial comprar = new ComprarMaterial();
         Vender vender = new Vender();
-        //ConnectionDB connection = new ConnectionDB();
-        ConsultasDB consultas = new ConsultasDB();
+        ConnectionDB connection = new ConnectionDB();
+        //ConsultasDB consultas = new ConsultasDB();
 
         do{
             menu.principal();
@@ -23,53 +23,47 @@ public class Main{
             switch(opcion){
                 case "1":
                     comprar.realizar();
-                break;
+                    break;
                 case "2":
                     vender.realizar();
-                break;
+                    break;
                 case "3":
-                    menu.editar();
+                    System.out.println("Seleccione nuevo estado");
+                    menu.editarEstado();
                     opcion = entrada.nextLine();
-                    switch(opcion){
-                        case "1":
-                            opcion = entrada.nextLine();
-                            switch(opcion){
-                                case "1":
-                                    menu.editarEstado();
-                                    opcion = entrada.nextLine();
-                                    switch(opcion){
-                                        case"1":
-                                        //Proceso de corte
-                                        //vender.editarEstadoV("Proceso de corte");
-                                        case"2":
-                                        //Proceso de armado
-                                        //vender.editarEstadoV("Proceso de armado");
-                                        case"3":
-                                        //Proceso de acabado
-                                        //vender.editarEstadoV("Proceso de acabado");
-                                        case"4":
-                                        //Proceso de entrega
-                                        //vender.editarEstadoV("Proceso de entrega");
-                                    }
-                                    break;
-                                case "2":
-
-                                    break;
-                                case "3":
-
-                                    break;
-                                default:
-                                    System.out.println("Opcion no valida");
-                                    break;
-                            }   
-                            break;
-                        case "2":
-                            break;
-                        case "3":
-                            break; 
-                    }
-            
-                break;
+                        switch(opcion){
+                            case"1":
+                                //Estado en bodega
+                                System.out.println("Ingrese correlativo: ");
+                                opcion = entrada.nextLine();                                            
+                                connection.updateEstado(Integer.parseInt(opcion),"bodega");
+                                break;
+                            case"2":
+                                //Proceso de Corte
+                                System.out.println("Ingrese correlativo: ");
+                                opcion = entrada.nextLine();
+                                connection.updateEstado(Integer.parseInt(opcion),"corte");
+                                break;
+                            case"3":
+                                System.out.println("Ingrese correlativo: ");
+                                opcion = entrada.nextLine();
+                                connection.updateEstado(Integer.parseInt(opcion),"armado");
+                                break;
+                            case"4":
+                                System.out.println("Ingrese correlativo: ");
+                                opcion = entrada.nextLine();
+                                connection.updateEstado(Integer.parseInt(opcion),"acabado");
+                                break;
+                            case "5":
+                                System.out.println("Ingrese correlativo: ");
+                                opcion = entrada.nextLine();
+                                connection.updateEstado(Integer.parseInt(opcion),"finalizado");
+                                break;
+                            default:
+                                System.out.println("Opcion no valida");
+                                break;
+                        }
+                    break;
                 case "4":
                     menu.crear();
                     opcion = entrada.nextLine();
@@ -93,7 +87,7 @@ public class Main{
                     break;                                                                
                     }
                     break;
-                case "5":
+            /*    case "5":  
                     menu.buscar();
                     opcion = entrada.nextLine();
                     //System.out.println(consultas.getUltimoID("DocumentoID","Documento")); //String
@@ -124,8 +118,8 @@ public class Main{
                             menu.menuSiNo();
                         break;                
                     }
-
                 break;
+                */
                 case "0":
                     salir = true;
                     System.out.println("Programa cerrado");
