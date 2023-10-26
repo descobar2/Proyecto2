@@ -34,8 +34,11 @@ CREATE TABLE Documento (
     DocumentoID INT AUTO_INCREMENT PRIMARY KEY,
     ProveedorID INT,
     ClienteID INT,
+    ProductoID INT,
+    CantPro INT NOT NULL,
     TipoID INT NOT NULL,
     Estado VARCHAR(50) NOT NULL,
+    FOREIGN KEY (ProductoID) REFERENCES Producto(ProductoID),
     FOREIGN KEY (TipoID) REFERENCES Tipo(TipoID),
     FOREIGN KEY (ProveedorID) REFERENCES Persona(PersonaID),
     FOREIGN KEY (ClienteID) REFERENCES Persona(PersonaID)
@@ -63,4 +66,4 @@ CREATE TABLE ProductoMaterial (
     MaterialID INT NOT NULL,
     Cantidad INT NOT NULL);
 );
-DROP TABLE ProductoMaterial;
+DROP TABLE Documento;

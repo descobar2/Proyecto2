@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class ConsultasDB {
     final String HOST = "proyecto2.ctlvgikixphm.us-east-1.rds.amazonaws.com:3306/FABRICA";
@@ -45,28 +46,49 @@ public class ConsultasDB {
         return Integer.parseInt(dato);
     }
 //Consutlas tabla persona
-    public String getPersona(String cliente){
-            String dato = getDato("Persona","Nit","Nombre",cliente);
+    public String getPersona(String nombre){
+        String dato = getDato("Persona","Nit","Nombre",nombre);
         return dato;
+    }
+    public int gerPersonaN(String nombre){
+        String dato = getDato("Persona","PersonaID","Nombre",nombre);
+        return Integer.parseInt(dato);
     }
     public String getPersona(int personaID){
         String sPersonaID = "" + personaID;
-            String dato = getDato("Persona","Nombre","personaID",sPersonaID);
+        String dato = getDato("Persona","Nombre","personaID",sPersonaID);
         return dato;
     }
     public int getPersonaTipo(String cliente){
-            String dato = getDato("Persona","TipoID","Nombre",cliente);
+        String dato = getDato("Persona","TipoID","Nombre",cliente);
         return Integer.parseInt(dato);
     }  
 //Consultas tabla Producto
     public int getProductoID(String nombre){
-            String dato = getDato("Producto","ProductoID","NombrePro",nombre);
+        String dato = getDato("Producto","ProductoID","NombrePro",nombre);
         return Integer.parseInt(dato);
     }
+//Consultr tabla Documento
+    public String getDocID(int clienteID){
+        String sClienteID = "" + clienteID;
+        String dato = getDato("Documento","DocumentoID","ClienteID",sClienteID);
+        return dato;
+    }
 //Consultas tabla ProductoMaterial
-
-
-
+    public ArrayList<ListaMateriales> listaMaterial(int productoID) throws SQLException{      
+        ArrayList<ListaMateriales> materiales = new ArrayList<ListaMateriales>();
+        String sql = "SELECT MaterialID, Cantidad FROM ProductoMaterial WHERE ProductoID = ?";                    
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1,productoID);
+        ResultSet rs =ps.executeQuery();
+        while(rs.next()){
+            ListaMateriales lm = new ListaMateriales();
+            lm.setMaterialID(rs.getInt("MaterialID"));
+            lm.setCantidad(rs.getInt("Cantidad"));
+            materiales.add(lm);
+        }       
+        return materiales;
+    }
 //Consultas tabla * campo 
     public String getDato(String tabla, String campoObtener, String campoBuscar, String busqueda){
         String respuesta="-1";
@@ -82,5 +104,22 @@ public class ConsultasDB {
             e.printStackTrace();
         }
         return respuesta;
+    }
+//Consultar ulitmo ID generado
+    public int getUltimoID(String tabalID, String tabla) {
+        try {
+            String sql = "SELECT MAX(" + tabalID + ") AS UltimoID FROM " + tabla;
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt("UltimoID"); // Obtiene el valor del último ID
+            } else {
+                return -1; // Si no hay resultados
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Si hay un error
     }
 }

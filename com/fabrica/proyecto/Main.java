@@ -15,7 +15,7 @@ public class Main{
         ComprarMaterial comprar = new ComprarMaterial();
         Vender vender = new Vender();
         //ConnectionDB connection = new ConnectionDB();
-        //ConsultasDB consultas = new ConsultasDB();
+        ConsultasDB consultas = new ConsultasDB();
 
         do{
             menu.principal();
@@ -96,7 +96,7 @@ public class Main{
                 case "5":
                     menu.buscar();
                     opcion = entrada.nextLine();
-                    //System.out.println(consultas.getInventario(opcion)); //String
+                    //System.out.println(consultas.getUltimoID("DocumentoID","Documento")); //String
                     //System.out.println(consultas.getNombreMat(Integer.parseInt(opcion))); //Integer
                     switch (opcion){
                         case "1":

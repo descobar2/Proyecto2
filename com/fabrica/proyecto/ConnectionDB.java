@@ -99,14 +99,15 @@ public class ConnectionDB{
         return false;
     }
 //funcion para crear orden de compra.
-    public void nuevaOrden(int proveedorID, int clienteID, int tipoID, String estado){
+    public void nuevaOrden(int clienteID, int productoID, int cantProd, int tipoID, String estado){
         try {
-            String sql = "INSERT INTO Documento (ProveedorID, ClienteID, tipoID, estado) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO Documento (ClienteID, ProductoID, CantPro, TipoID, Estado) VALUES (?,?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1,proveedorID);
-            ps.setInt(2, clienteID);
-            ps.setInt(3, tipoID);
-            ps.setString(4, estado);
+            ps.setInt(1,clienteID);
+            ps.setInt(2, productoID);
+            ps.setInt(3, cantProd);
+            ps.setInt(4, tipoID);
+            ps.setString(5, estado);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,54 +129,6 @@ public class ConnectionDB{
         }
         return -1;
     }
-    public ArrayList<ListaMateriales> listaMaterial(int productoID, int cantidad){      
-        ArrayList<ListaMateriales> datos = new ArrayList<ListaMateriales>();
-        ArrayList<ListaMateriales> orden = new ArrayList<ListaMateriales>();  
-        ArrayList<ListaMateriales> pedido = new ArrayList<ListaMateriales>();
-        int contador = 0;
-        try {
-            String sql = "SELECT MaterialID, Cantidad FROM ProductoMaterial WHERE ProductoID = ?";                    
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs =ps.executeQuery(sql);
-            while(rs.next()){
-                ListaMateriales p = new ListaMateriales();
-                p.setProductoID(rs.getInt("ProductoId"));
-                p.setMaterialID(rs.getInt("MaterialID"));
-                p.setCantidad(rs.getInt("Cantidad"));
-                datos.add(p);
-            }
-            System.out.print("Validadando");
-            for (ListaMateriales p : datos){
-                if((p.getCantidad()*cantidad)<(getDisponible(p.getMaterialID()))){
-                    System.out.print(".");
-                    ListaMateriales lo = new ListaMateriales();
-                    lo.setProductoID(p.getProductoID());
-                    lo.setMaterialID(p.getMaterialID());
-                    lo.setCantidad(p.getCantidad()*cantidad);
-                    orden.add(lo);
-                }else{
-                    System.out.print(".");
-                    ListaMateriales lp = new ListaMateriales();
-                    lp.setMaterialID(p.getMaterialID());
-                    lp.setCantidad(p.getCantidad()*cantidad);
-                    pedido.add(lp);
-                    contador++;
-                }               
-            }
-            if (contador>0){
-                Menu menu = new Menu();
-                System.out.println("Materiales no disponibles, desea generar pedido");
-                if(menu.menuSiNo()){
-                    //funcion crear pedido
-                }
-            }else{
-                    //funcion insetar orden en DB
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return datos;
-    }
     public int getDisponible(int materialID){
             try {
                 String sql = "SELECT CantDisp FROM Material WHERE MaterialID = ? ";
@@ -190,6 +143,15 @@ public class ConnectionDB{
                 e.printStackTrace();
             }
         return -1;
+    }
+    public void updateInventario(int materialID,int nuevoDato){
+        String sMaterialID = "" + materialID;
+        String sNuevoDato = "" + nuevoDato;
+        updateDato("Material","CantDisp","MaterialID",sNuevoDato, sMaterialID);
+    }
+    public void updateEstado(int documentoID, String nuevoEstado){
+        String sDocumentoID = "" + documentoID;
+        updateDato("Documento", "Estado", "DocumentoID", nuevoEstado, sDocumentoID);
     }
 //----------------------------------------------------------------------    
     public void instertDB(Connection con){
@@ -206,12 +168,12 @@ public class ConnectionDB{
             e.printStackTrace();
         }        
     }
-    public void updateDB(Connection con){
+    public void updateDato(String tabla, String campoUpdate, String campoBus, String cantidad, String materialID){
         try{
-            String sql = "UPDATE Proveedor SET Nombre = ? WHERE ProveedorID = ?";
+            String sql = "UPDATE "+ tabla +" SET "+ campoUpdate +" = ? WHERE " + campoBus + " = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1,"Marvin");
-            ps.setInt(2, 4);
+            ps.setString(1,cantidad);
+            ps.setString(2,materialID);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
