@@ -13,7 +13,7 @@ public class Menu {
         System.out.println("2. Realizar una venta");
         System.out.println("3. Editar estado");
         System.out.println("4. Crear");
-        //System.out.println("5. Bucar");
+        System.out.println("5. Mostrar inventario");
         System.out.println("0. Salir");
     }
     public void crear(){

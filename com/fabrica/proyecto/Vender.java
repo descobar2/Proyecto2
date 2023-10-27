@@ -51,7 +51,9 @@ public class Vender implements Operaciones{
                         }
                     }
                     if(contador!=0){
-                        //Crear pedido
+                        nuevoPedido("Espera");
+                        System.out.print("Se genero pedido No.\t");
+                        System.out.println(consultas.getUltimoID("DocumentoID","Documento"));
                     }else{
                         nuevaOrden("Bodega");
                         System.out.print("Se genero orden No.\t");

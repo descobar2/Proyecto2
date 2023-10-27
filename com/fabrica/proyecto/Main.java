@@ -15,7 +15,7 @@ public class Main{
         ComprarMaterial comprar = new ComprarMaterial();
         Vender vender = new Vender();
         ConnectionDB connection = new ConnectionDB();
-        //ConsultasDB consultas = new ConsultasDB();
+        ConsultasDB consultas = new ConsultasDB();
 
         do{
             menu.principal();
@@ -30,7 +30,7 @@ public class Main{
                 case "3":
                     System.out.println("Seleccione nuevo estado");
                     menu.editarEstado();
-                    opcion = entrada.nextLine();
+                    opcion = entrada.nextLine();                   
                         switch(opcion){
                             case"1":
                                 //Estado en bodega
@@ -87,12 +87,9 @@ public class Main{
                     break;                                                                
                     }
                     break;
-            /*    case "5":  
-                    menu.buscar();
-                    opcion = entrada.nextLine();
-                    //System.out.println(consultas.getUltimoID("DocumentoID","Documento")); //String
-                    //System.out.println(consultas.getNombreMat(Integer.parseInt(opcion))); //Integer
-                    switch (opcion){
+                case "5":  
+                    consultas.showInventario();
+                    /*switch (opcion){
                         case "1":
                             System.out.println("Ingrese No. de orden: ");
                             opcion = entrada.nextLine();
@@ -117,16 +114,15 @@ public class Main{
                             System.out.println("Valor invalido:");
                             menu.menuSiNo();
                         break;                
-                    }
+                    }*/
                 break;
-                */
                 case "0":
                     salir = true;
                     System.out.println("Programa cerrado");
                 break;
                 default:
                     System.out.println("Valor invalido, intente de nuevo");
-                    break;
+                break;
             }
         }while(!salir);
     entrada.close();

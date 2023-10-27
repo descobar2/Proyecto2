@@ -122,4 +122,22 @@ public class ConsultasDB {
         }
         return -1; // Si hay un error
     }
+// Consultar inventario
+    public void showInventario() throws SQLException{
+        ArrayList<ListaMateriales> inventario = new ArrayList<ListaMateriales>();
+        String sql = "SELECT * FROM Material"; 
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+              
+        while(rs.next()){
+            ListaMateriales inv = new ListaMateriales();
+            inv.setNombreMat(rs.getString("NombreMat"));
+            inv.setCantidad(rs.getInt("CantDisp"));
+            inventario.add(inv);
+        }
+        System.out.println("Inventario");
+        for (ListaMateriales inv : inventario){
+            System.out.println(inv.getNombreMat()+"\t"+inv.getCantidad());
+        }
+    }
 }
